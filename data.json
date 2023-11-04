@@ -2340,15 +2340,6 @@
       "password": "Hello@123",
       "addresses": [
         {
-          "name": "priyanshu",
-          "email": "dubey@gmail.com",
-          "phone": "5678904312",
-          "street": "huzur 121",
-          "city": "Mandideep",
-          "state": "MP",
-          "pincode": "1212121"
-        },
-        {
           "name": "Priyanshu Dubey",
           "email": "priyanshudube397@gmail.com",
           "phone": "1234567890",
@@ -2356,6 +2347,15 @@
           "city": "Baranjh",
           "state": "MP",
           "pincode": "487441"
+        },
+        {
+          "name": "priyanshu",
+          "email": "dubey@gmail.com",
+          "phone": "5678904312",
+          "street": "huzur 121",
+          "city": "Mandideep",
+          "state": "MP",
+          "pincode": "1212121"
         }
       ],
       "id": 1
