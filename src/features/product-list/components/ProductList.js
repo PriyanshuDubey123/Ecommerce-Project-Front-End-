@@ -36,7 +36,7 @@ const oldproducts = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
       imageAlt: "Front of men's Basic Tee in black.",
-      price: "$35",
+      price: "$ 35",
       color: "Black",
     },
     {
@@ -46,7 +46,7 @@ const oldproducts = [
     imageSrc:
       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
     imageAlt: "Front of men's Basic Tee in black.",
-    price: "$35",
+    price: "$ 35",
     color: "Black",
   },
   {
@@ -56,7 +56,7 @@ const oldproducts = [
     imageSrc:
     "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
     imageAlt: "Front of men's Basic Tee in black.",
-    price: "$35",
+    price: "$ 35",
     color: "Black",
   },
 ];
@@ -317,8 +317,8 @@ function MobileFilter({mobileFiltersOpen, setMobileFiltersOpen,handleFilter, fil
                                       className="flex items-center"
                                     >
                                       <input
-                                        id={`filter-mobile-${section.id}-${optionIdx}`}
-                                        name={`${section.id}[]`}
+                                        id={`filter-mobile-$ {section.id}-$ {optionIdx}`}
+                                        name={`$ {section.id}[]`}
                                         defaultValue={option.value}
                                         type="checkbox"
                                         defaultChecked={option.checked}
@@ -326,7 +326,7 @@ function MobileFilter({mobileFiltersOpen, setMobileFiltersOpen,handleFilter, fil
                                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                       />
                                       <label
-                                        htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
+                                        htmlFor={`filter-mobile-$ {section.id}-$ {optionIdx}`}
                                         className="ml-3 min-w-0 flex-1 text-gray-500"
                                       >
                                         {option.label}
@@ -386,8 +386,8 @@ function DeskTopFilter({handleFilter, filters}){
                   className="flex items-center"
                 >
                   <input
-                    id={`filter-${section.id}-${optionIdx}`}
-                    name={`${section.id}[]`}
+                    id={`filter-$ {section.id}-$ {optionIdx}`}
+                    name={`$ {section.id}[]`}
                     defaultValue={option.value}
                     type="checkbox"
                     defaultChecked={option.checked}
@@ -395,7 +395,7 @@ function DeskTopFilter({handleFilter, filters}){
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   />
                   <label
-                    htmlFor={`filter-${section.id}-${optionIdx}`}
+                    htmlFor={`filter-$ {section.id}-$ {optionIdx}`}
                     className="ml-3 text-sm text-gray-600"
                   >
                     {option.label}
@@ -457,7 +457,7 @@ function Pagination({page, setPage, handlePage, totalItems}){
                     (
                       <div onClick={e=>handlePage(index+1)}
                     aria-current="page"
-                    className={`relative z-10 inline-flex items-center ${index+1 === page? 'bg-indigo-600 text-white':' text-black' } cursor-pointer px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                    className={`relative z-10 inline-flex items-center $ {index+1 === page? 'bg-indigo-600 text-white':' text-black' } cursor-pointer px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                     >
                       {index+1}
                         </div>
@@ -516,10 +516,10 @@ function ProductGrid({products}){
                                   </div>
                                 <div>
                                 <p className="text-sm font-medium text-gray-900">
-                                  ₹{Math.round(product.price*(1-product.discountPercentage/100))}
+                                  $ {Math.round(product.price*(1-product.discountPercentage/100))}
                                   </p>
                                   <p className="text-sm line-through font-medium text-gray-900">
-                                  ₹{product.price}
+                                  $ {product.price}
                                   </p>
                                 </div>
                                 </div>

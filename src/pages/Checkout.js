@@ -2,84 +2,93 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { deleteItemFromCartAsync, selectItems, updateCartAsync } from "../features/cart/cartSlice";
 import { Link, Navigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { updateUserAsync } from '../features/auth/authSlice';
+import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
+import { selectUserInfo } from '../features/user/userSlice';
 
 
-const addresses = [
-  {
-    name: 'Priyanshu Dubey',
-    street: '1st Main',
-    city:'Bhopal',
-    pincode: 487440,
-    state:'Madhya Pradesh',
-    phone:1234567899
-  },
-   {
-    name: 'Chhotu Dubey',
-    street: '1st Main',
-    city:'Baranjh',
-    pincode: 487441,
-    state:'Madhya Pradesh',
-    phone:1234567899
-  }
-]
 
 function Checkout() {
+
+  const user = useSelector(selectUserInfo);
+
+  const currentOrder = useSelector(selectCurrentOrder);
+
   const [open, setOpen] = useState(true);
   
   const dispatch = useDispatch();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const items = useSelector(selectItems);
 
   const totalAmount = items.reduce((amount,item)=>item.price*item.quantity+amount,0);
   const totalItems = items.reduce((quantity,item)=>item.quantity+quantity,0);
 
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('cash');
+
   const handleQuantity = (e,item) => {
       dispatch(updateCartAsync({...item,quantity:+e.target.value}));
   }
+
+ const handleAddress = (e) =>{
+   setSelectedAddress(user.addresses[e.target.value]);
+ }
+
+ const handlePayment = (e)=>{
+   console.log(e.target.value);
+   setPaymentMethod(e.target.value)
+ }
 
 const handleRemove = (itemId) =>{
   dispatch(deleteItemFromCartAsync(itemId));
 }
 
+const handleOrder = (e) =>{
+  if(selectedAddress && paymentMethod){
+  const order = {items,totalAmount,totalItems,user,paymentMethod, selectedAddress, status:'pending'};
+  dispatch(createOrderAsync(order));
+  }
+  else{
+    alert('Enter Address and Payment Method')
+  }
+}
 
   return (
    <>
     {!items.length && <Navigate to='/' replace= {true} ></Navigate>}
+    {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace= {true} ></Navigate>}
    <div className=' mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>  
    <div className=' grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5'>
    <div className='lg:col-span-3 py-5'>
-   <form className=' bg-white px-5 py-7 mt-5'>
+   <form className=' bg-white px-5 py-7 mt-5' noValidate 
+   onSubmit={handleSubmit((data)=>{
+    console.log(data);
+   dispatch(updateUserAsync({...user,addresses:[...user.addresses,data]}));
+   reset();
+   })}>
    <div className="space-y-12">
    <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-2xl font-semibold leading-7 text-gray-900">Personal Information</h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                First name
+            <div className="sm:col-span-4">
+              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                Full name
               </label>
               <div className="mt-2">
                 <input
                   type="text"
-                  name="first-name"
-                  id="first-name"
-                  autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900">
-                Last name
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="last-name"
-                  id="last-name"
-                  autoComplete="family-name"
+                  {...register('name',{required:'name is required'})}
+                  id="name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
               </div>
@@ -92,29 +101,24 @@ const handleRemove = (itemId) =>{
               <div className="mt-2">
                 <input
                   id="email"
-                  name="email"
+                  {...register('email',{required:'email is required'})}
                   type="email"
-                  autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
-                Country
+              <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
+                Phone
               </label>
               <div className="mt-2">
-                <select
-                  id="country"
-                  name="country"
-                  autoComplete="country-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                  >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
-                </select>
+              <input
+                  id="phone"
+                  {...register('phone',{required:'Phone Number is required'})}
+                  type="tel"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
               </div>
             </div>
 
@@ -125,9 +129,8 @@ const handleRemove = (itemId) =>{
               <div className="mt-2">
                 <input
                   type="text"
-                  name="street-address"
+                  {...register('street',{required:'street-address is required'})}
                   id="street-address"
-                  autoComplete="street-address"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
               </div>
@@ -140,7 +143,7 @@ const handleRemove = (itemId) =>{
               <div className="mt-2">
                 <input
                   type="text"
-                  name="city"
+                  {...register('city',{required:'city is required'})}
                   id="city"
                   autoComplete="address-level2"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -149,14 +152,14 @@ const handleRemove = (itemId) =>{
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="region" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="state" className="block text-sm font-medium leading-6 text-gray-900">
                 State / Province
               </label>
               <div className="mt-2">
                 <input
                   type="text"
-                  name="region"
-                  id="region"
+                  {...register('state',{required:'state is required'})}
+                  id="state"
                   autoComplete="address-level1"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -164,15 +167,15 @@ const handleRemove = (itemId) =>{
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="postal-code" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="pinCode" className="block text-sm font-medium leading-6 text-gray-900">
                 ZIP / Postal code
               </label>
               <div className="mt-2">
                 <input
                   type="text"
-                  name="postal-code"
-                  id="postal-code"
-                  autoComplete="postal-code"
+                  {...register('pinCode',{required:'Pin Code is required'})}
+                  id="pinCode"
+                  autoComplete="pinCode"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
               </div>
@@ -199,12 +202,14 @@ const handleRemove = (itemId) =>{
           </p>
           
             <ul role="list" >
-      {addresses.map((address) => (
-        <li key={address.pincode} className="flex justify-between gap-x-6 py-5 border-solid border-2 border-gray-200 px-5 mt-1">
+      {user.addresses.map((address,index) => (
+        <li key={index} className="flex justify-between gap-x-6 py-5 border-solid border-2 border-gray-200 px-5 mt-1">
           <div className="flex min-w-0 gap-x-4">
              <input
+                    onChange={handleAddress}
                     name='address'
                     type="radio"
+                    value={index}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
             <div className="min-w-0 flex-auto">
@@ -231,9 +236,12 @@ const handleRemove = (itemId) =>{
               <div className="mt-6 space-y-6">
                 <div className="flex items-center gap-x-3">
                   <input
+                    onChange={handlePayment}
                     id="cash"
                     name="payments"
+                    value="cash"
                     type="radio"
+                    checked = {paymentMethod ===  "cash"}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label htmlFor="cash" className="block text-sm font-medium leading-6 text-gray-900">
@@ -242,9 +250,12 @@ const handleRemove = (itemId) =>{
                 </div>
                 <div className="flex items-center gap-x-3">
                   <input
+                   onChange={handlePayment}
                     id="card"
                     name="payments"
+                    value="card"
                     type="radio"
+                    checked = {paymentMethod === "card"}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                     />
                   <label htmlFor="card" className="block text-sm font-medium leading-6 text-gray-900">
@@ -336,13 +347,12 @@ const handleRemove = (itemId) =>{
             Shipping and taxes calculated at checkout.
           </p>
           <div className="mt-6">
-            <Link
-              to="/checkout"
-              href="#"
-              className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+            <div
+            onClick={handleOrder}
+              className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
             >
-              Checkout
-            </Link>
+              Order Now
+            </div>
           </div>
           <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
             <p>

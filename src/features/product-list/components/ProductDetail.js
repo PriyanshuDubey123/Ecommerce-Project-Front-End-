@@ -117,7 +117,7 @@ dispatch(addToCartAsync(newItem));
           </div>
           <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
-                src={product.images[3]}
+                src={product.images ?product.images[3] : ''}
                 alt={product.title}
               className="h-full w-full object-cover object-center"
             />
@@ -133,7 +133,7 @@ dispatch(addToCartAsync(newItem));
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-gray-900">₹{product.price}</p>
+            <p className="text-3xl tracking-tight text-gray-900">$ {product.price}</p>
 
             {/* Reviews */}
             <div className="mt-6">

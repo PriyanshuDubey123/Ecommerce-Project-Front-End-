@@ -17,41 +17,74 @@ import Protected from './features/auth/components/Protected';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
 import { selectLoggedInUser } from './features/auth/authSlice';
+import { PageNotFound } from './pages/404';
+import { OrderSuccessPage } from './pages/OrderSuccessPage';
+import UserOrders from './features/user/components/UserOrders';
+import UserOrdersPage from './pages/UserOrdersPage';
+import UserProfile from './features/user/components/UserProfile';
+import UserProfilePage from './pages/UserProfilePage';
+import { fetchLoggedInUserAsync } from './features/user/userSlice';
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Protected>
+    element:(
+      <Protected>
       <Home></Home>
-      </Protected> 
+      </Protected>)
+     
   },
   {
     path: "/login",
-    element: 
-      <LoginPage></LoginPage>,
+    element: (
+      <LoginPage></LoginPage>),
   },
   {
     path: "/signup",
-    element: <SignUpPage></SignUpPage>
+    element: (<SignUpPage></SignUpPage>)
   },
   {
     path: "/cart",
-    element: <Protected>
+    element: (<Protected>
      <CartPage></CartPage>
-    </Protected> 
+    </Protected>) 
   },
   {
     path: "/checkout",
-    element: <Protected>
+    element: (<Protected>
       <Checkout/>
-    </Protected>
+    </Protected>)
   },
   {
     path: "/product-detail/:id",
-    element: <Protected>
+    element: (<Protected>
       <ProductDetailPage/>
-    </Protected>
+    </Protected>)
+  },
+  {
+    path: "/order-success/:id",
+    element: (
+      <OrderSuccessPage/>
+    )
+  },
+  {
+    path: "/profile",
+    element: (
+      <UserProfilePage/>
+    )
+  },
+  {
+    path: "/orders",
+    element: (
+      <UserOrdersPage/>
+    )
+  },
+  {
+    path: "*",
+    element: (
+      <PageNotFound/>
+    )
   },
 ]);
 
@@ -61,7 +94,9 @@ const dispatch = useDispatch();
 const user = useSelector(selectLoggedInUser);
 useEffect(()=>{
   if(user){
-dispatch(fetchItemsByUserIdAsync(user.id))}
+dispatch(fetchItemsByUserIdAsync(user.id))
+dispatch(fetchLoggedInUserAsync(user.id))
+}
 },[dispatch,user])
 
   return (
