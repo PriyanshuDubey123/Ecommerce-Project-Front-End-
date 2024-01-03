@@ -8,6 +8,7 @@ import {
   selectAllProducts,
   selectBrands,
   selectCategories,
+  selectStatus,
   selectTotalItems,
 } from "../ProductSlice";
 
@@ -30,6 +31,7 @@ import { Link } from "react-router-dom";
 import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
 import { fetchCategories } from "../ProductAPI";
 import Pagination from "../../common/Pagination";
+import { Circles } from "react-loader-spinner";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", current: false },
@@ -75,6 +77,7 @@ const oldproducts = [
 ];
 
 export default function ProductList() {
+  const status = useSelector(selectStatus);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
@@ -146,6 +149,8 @@ export default function ProductList() {
   return (
     <div>
       <div className="bg-white">
+
+
         <div>
           {/* Mobile filter dialog */}
           <MobileFilter
@@ -235,7 +240,7 @@ export default function ProductList() {
                 <DeskTopFilter filters={filters} handleFilter={handleFilter} />
 
                 {/* Product grid */}
-                <ProductGrid products={products} />
+                <ProductGrid products={products} status={status} />
               </div>
             </section>
 
@@ -430,7 +435,7 @@ function DeskTopFilter({ handleFilter, filters }) {
   );
 }
 
-function ProductGrid({ products }) {
+function ProductGrid({ products , status}) {
   return (
     <>
       <div className="lg:col-span-3">
@@ -439,6 +444,15 @@ function ProductGrid({ products }) {
           <div className="bg-white">
             <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
               <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                {status === 'loading' ? <Circles
+                  height="80"
+                  width="80"
+                  color="#4fa94d"
+                  ariaLabel="circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                /> : null}
                 {products.map((product) => (
                   <Link to={`/product-detail/${product.id}`}>
                     <div
@@ -487,6 +501,13 @@ function ProductGrid({ products }) {
                         <div>
                           <p className=" text-sm text-red-400">
                             Product Deleted
+                          </p>
+                        </div>
+                      )}
+                      {product.stock <= 0 && (
+                        <div>
+                          <p className=" text-sm text-red-400">
+                            Out of Stock
                           </p>
                         </div>
                       )}

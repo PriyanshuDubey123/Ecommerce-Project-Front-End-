@@ -18,7 +18,7 @@ export default function UserOrders() {
   return (
     <div>
 
-      {orders.map((order)=> (
+      {orders && orders.map((order)=> (
         <div>
 
       <div className="mt-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 bg-white">

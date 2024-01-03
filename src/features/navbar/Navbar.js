@@ -8,9 +8,8 @@ import { selectLoggedInUser } from '../auth/authSlice'
 
 
 const navigation = [
-  { name: 'DashBoard', link: '#', user: true },
-  { name: 'Team', link: '#', user: true },
-  { name: 'Admin', link: '/admin', admin: true },
+  { name: 'Products', link: '/', user: true },
+  { name: 'Products', link: '/admin', admin: true},
   { name: 'Orders', link: '/admin/orders', admin: true },
 
 ]
@@ -52,7 +51,7 @@ const user = useSelector(selectLoggedInUser);
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
                       {navigation.map((item) => 
-                         item[user.role] ? ( <Link
+                        ( <Link
                           key={item.name}
                           to={item.link}
                           className={classNames(
@@ -64,7 +63,7 @@ const user = useSelector(selectLoggedInUser);
                           aria-current={item.current ? 'page' : undefined}
                         >
                           {item.name}
-                        </Link>) : null
+                        </Link>)
                       )}
                     </div>
                   </div>

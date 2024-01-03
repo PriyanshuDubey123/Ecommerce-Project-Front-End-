@@ -31,6 +31,8 @@ import AdminHome from './pages/AdminHome';
 import AdminProductDetailPage from './pages/AdminProductDetailPage';
 import AdminProductFormPage from './pages/AdminProductFormPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
+import { positions, Provider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
 
 
 const router = createBrowserRouter([
@@ -151,9 +153,17 @@ dispatch(fetchLoggedInUserAsync(user.id))
 }
 },[dispatch,user])
 
+const options = {
+  timeout: 5000,
+  position: positions.BOTTOM_LEFT
+};
+
+
   return (
     <div className="App">
+      <Provider template={AlertTemplate} {...options}>
      <RouterProvider router={router} />
+      </Provider>
     </div>
   );
 }
