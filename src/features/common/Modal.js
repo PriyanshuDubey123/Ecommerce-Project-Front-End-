@@ -1,33 +1,38 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-export default function Modal({ title, message, dangerOption, cancelOption, dangerAction, showModal,cancelAction }) {
-  const [open, setOpen] = useState(false)
+export default function Modal({title,message,dangerOption,cancelOption, dangerAction, cancelAction, showModal }) {
+  const [open, setOpen] = useState(false);
 
-  const cancelButtonRef = useRef(null)
+  const cancelButtonRef = useRef(null);
 
-  useEffect(() => {
-    if (showModal) {
-      setOpen(true);
-    }
-    else
-      setOpen(false);
-  }, [showModal]);
-
- const handleCancel = () =>{
-  setOpen(false)
-  cancelAction();
- }
-
-  const handleDanger = () => {
+  const handleDanger = ()=>{
     setOpen(false)
-    dangerAction();
+    dangerAction()
   }
+
+  const handleCancel = ()=>{
+    setOpen(false)
+    cancelAction()
+  }
+
+  useEffect(()=>{
+    if(showModal){
+       setOpen(true)
+    } else{
+      setOpen(false)
+    }
+  },[showModal])
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={handleCancel}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        initialFocus={cancelButtonRef}
+        onClose={setOpen}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -40,7 +45,7 @@ export default function Modal({ title, message, dangerOption, cancelOption, dang
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-10 overflow-y-auto">
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
@@ -55,15 +60,21 @@ export default function Modal({ title, message, dangerOption, cancelOption, dang
                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+                      <ExclamationTriangleIcon
+                        className="h-6 w-6 text-red-600"
+                        aria-hidden="true"
+                      />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-base font-semibold leading-6 text-gray-900"
+                      >
                         {title}
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          {message}
+                         {message}
                         </p>
                       </div>
                     </div>
@@ -92,5 +103,5 @@ export default function Modal({ title, message, dangerOption, cancelOption, dang
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }
