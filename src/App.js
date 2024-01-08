@@ -2,7 +2,8 @@ import { Counter } from './features/counter/Counter';
 import './App.css';
 import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
+
+
 
 import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
 import CartPage from './pages/CartPage';
@@ -27,6 +28,8 @@ import AdminProductFormPage from './pages/AdminProductFormPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
 import { positions, Provider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
+import SignUpPage from './pages/SignUpPage';
+
 
 const options = {
   timeout: 5000,
@@ -56,7 +59,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/signup',
-    element: <SignupPage></SignupPage>,
+    element: <SignUpPage/>
   },
   {
     path: '/cart',
@@ -158,8 +161,8 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchItemsByUserIdAsync(user.id));
-      dispatch(fetchLoggedInUserAsync(user.id));
+      dispatch(fetchItemsByUserIdAsync());
+      dispatch(fetchLoggedInUserAsync());
     }
   }, [dispatch, user]);
 
