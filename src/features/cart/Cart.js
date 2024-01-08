@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteItemFromCartAsync,
+  selectCartItemChecked,
   selectCartStatus,
   selectItems,
   updateCartAsync,
@@ -15,6 +16,7 @@ import Modal from '../common/Modal';
 export default function Cart() {
   const dispatch = useDispatch();
 
+  const cartItemChecked = useSelector(selectCartItemChecked);
   const items = useSelector(selectItems);
   const status = useSelector(selectCartStatus);
   const [openModal, setOpenModal] = useState(null);
@@ -32,10 +34,10 @@ export default function Cart() {
   const handleRemove = (e, id) => {
     dispatch(deleteItemFromCartAsync(id));
   };
-
+  
   return (
     <>
-      {!items.length && <Navigate to="/" replace={true}></Navigate>}
+      {!items.length && cartItemChecked && <Navigate to="/" replace={true}></Navigate>}
 
       <div>
         <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">

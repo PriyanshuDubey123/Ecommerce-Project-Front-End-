@@ -115,7 +115,7 @@ function AdminOrders() {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {orders.map((order) => (
+                {orders && orders.map((order) => (
                   <tr key={order.id} className="border-b border-gray-200 hover:bg-gray-100">
                     <td className="py-3 px-6 text-left whitespace-nowrap">
                       <div className="flex items-center">
