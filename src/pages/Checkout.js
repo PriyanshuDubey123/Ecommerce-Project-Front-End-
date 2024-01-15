@@ -45,7 +45,7 @@ function Checkout() {
   const handleRemove = (e, id) => {
     dispatch(deleteItemFromCartAsync(id));
   };
-
+ 
   const handleAddress = (e) => {
     console.log(e.target.value);
     setSelectedAddress(user.addresses[e.target.value]);
@@ -70,12 +70,9 @@ function Checkout() {
       dispatch(createOrderAsync(order));
       // need to redirect from here to a new page of order success.
     } else {
-      // TODO : we can use proper messaging popup here
       alert('Enter Address and Payment method');
     }
-    //TODO : Redirect to order-success page
-    //TODO : clear cart after order
-    //TODO : on server change the stock number of items
+
   };
 
   return (

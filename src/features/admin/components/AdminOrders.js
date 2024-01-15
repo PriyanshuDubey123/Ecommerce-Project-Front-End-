@@ -76,7 +76,7 @@ function AdminOrders() {
 
   return (
     <div className="overflow-x-auto">
-      <div className="bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
+      <div className="bg-gray-100 flex items-center justify-center font-sans overflow-x-scroll">
         <div className="w-full">
           <div className="bg-white shadow-md rounded my-6">
             <table className="w-full table-auto">
@@ -165,7 +165,7 @@ function AdminOrders() {
                     className="border-b border-gray-200 hover:bg-gray-100"
                   >
                     <td className="py-3 px-0 text-left whitespace-nowrap">
-                      <div className="flex items-center">
+                      <div className="flex items-center flex-wrap">
                         <div className="mr-2"></div>
                         <span className="font-medium">{order.id}</span>
                       </div>
@@ -198,7 +198,6 @@ function AdminOrders() {
                           <strong>{order.selectedAddress.name}</strong>,
                         </div>
                         <div>{order.selectedAddress.street},</div>
-                        <div>{order.selectedAddress.city}, </div>
                         <div>{order.selectedAddress.state}, </div>
                         <div>{order.selectedAddress.pinCode}, </div>
                         <div>{order.selectedAddress.phone}, </div>
