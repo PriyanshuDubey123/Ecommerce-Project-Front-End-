@@ -40,7 +40,6 @@ export default function ResetPassword() {
             onSubmit={handleSubmit((data) => {
               console.log(data);
               dispatch(resetPasswordAsync({email,token,password:data.password}))
-              // TODO : implementation on backend with email
             })}
             className="space-y-6"
           >

@@ -3,6 +3,8 @@ import { selectError, selectLoggedInUser } from '../authSlice';
 import { Link, Navigate } from 'react-router-dom';
 import { loginUserAsync } from '../authSlice';
 import { useForm } from 'react-hook-form';
+import Modal from '../../common/Modal';
+import { useState } from 'react';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -14,6 +16,7 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
+  const [showloginModal,setshowloginModal] = useState(null);
 
   return (
     <>
@@ -63,6 +66,7 @@ export default function Login() {
                 {errors.email && (
                   <p className="text-red-500">{errors.email.message}</p>
                 )}
+                
               </div>
             </div>
 
@@ -118,6 +122,16 @@ export default function Login() {
               Create an Account
             </Link>
           </p>
+          <p onClick={()=>setshowloginModal(true)} className="mt-10 text-center font-semibold text-sm leading-6 text-black-600 hover:text-indigo-500 cursor-pointer">View Admin Login Credentials</p>
+
+          <Modal
+          title={"Admin Login Credentials"}
+          message="Admin Email: admin@gmail.com"
+          message2="Admin Password: Admin@123"
+          cancelOption="Close"
+          showModal={showloginModal}
+          cancelAction={()=>setshowloginModal(null)}
+          ></Modal>
         </div>
       </div>
     </>

@@ -12,9 +12,11 @@ import { useState } from 'react';
 import {
   createOrderAsync,
   selectCurrentOrder,
+  selectStatus,
 } from '../features/order/orderSlice';
 import { selectUserInfo } from '../features/user/userSlice';
-import { discountedPrice } from '../app/constants';
+import { Circles } from 'react-loader-spinner';
+
 
 function Checkout() {
   const dispatch = useDispatch();
@@ -27,10 +29,11 @@ function Checkout() {
 
   const user = useSelector(selectUserInfo);
   const items = useSelector(selectItems);
+  const status = useSelector(selectStatus);
   const currentOrder = useSelector(selectCurrentOrder);
 
   const totalAmount = items.reduce(
-    (amount, item) => discountedPrice(item.product) * item.quantity + amount,
+    (amount, item) => item.product.DiscountPrice * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -90,7 +93,19 @@ function Checkout() {
           replace={true}
         ></Navigate>
       )}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          {status === 'loading' ? (
+           <Circles
+           height="80"
+           width="80"
+           color="#6495ed"
+           ariaLabel="circles-loading"
+           wrapperStyle={{}}
+           wrapperClass=""
+           visible={true}
+           />
+          ) : 
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="lg:col-span-3">
             {/* This form is for address */}
@@ -414,7 +429,7 @@ function Checkout() {
                               <h3>
                                 <a href={item.product.id}>{item.product.title}</a>
                               </h3>
-                              <p className="ml-4">${discountedPrice(item.product)}</p>
+                              <p className="ml-4">${item.product.DiscountPrice}</p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
                               {item.product.brand}
@@ -495,7 +510,7 @@ function Checkout() {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </>
   );
 }

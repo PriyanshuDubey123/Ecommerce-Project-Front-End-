@@ -7,7 +7,6 @@ export function createUser(userData) {
       headers: { 'content-type': 'application/json' },
     });
     const data = await response.json();
-    // TODO: on server it will only return some info of user (not password)
     resolve({ data });
   });
 }
@@ -31,7 +30,6 @@ export function loginUser(loginInfo) {
       reject( error );
     }
 
-    // TODO: on server it will only return some info of user (not password)
   });
 }
 export function checkAuth() {
@@ -49,7 +47,6 @@ export function checkAuth() {
       reject( error );
     }
 
-    // TODO: on server it will only return some info of user (not password)
   });
 }
 
@@ -89,7 +86,6 @@ export function resetPasswordRequest(email) {
       reject( error );
     }
 
-    // TODO: on server it will only return some info of user (not password)
   });
 }
 export function resetPassword(data) {
@@ -111,6 +107,5 @@ export function resetPassword(data) {
       reject( error );
     }
 
-    // TODO: on server it will only return some info of user (not password)
   });
 }

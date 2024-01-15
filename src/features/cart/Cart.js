@@ -9,8 +9,7 @@ import {
 } from './cartSlice';
 import { Link } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import { discountedPrice } from '../../app/constants';
-import { Grid } from 'react-loader-spinner';
+import { Circles } from 'react-loader-spinner';
 import Modal from '../common/Modal';
 
 export default function Cart() {
@@ -22,7 +21,7 @@ export default function Cart() {
   const [openModal, setOpenModal] = useState(null);
 
   const totalAmount = items.reduce(
-    (amount, item) => discountedPrice(item.product) * item.quantity + amount,
+    (amount, item) => item.product.DiscountPrice * item.quantity + amount,
     0
   );
   const totalItems = items.reduce((total, item) => item.quantity + total, 0);
@@ -47,15 +46,14 @@ export default function Cart() {
             </h1>
             <div className="flow-root">
               {status === 'loading' ? (
-                <Grid
-                  height="80"
-                  width="80"
-                  color="rgb(79, 70, 229) "
-                  ariaLabel="grid-loading"
-                  radius="12.5"
-                  wrapperStyle={{}}
-                  wrapperClass=""
-                  visible={true}
+                <Circles
+                height="80"
+                width="80"
+                color="#6495ed"
+                ariaLabel="circles-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
                 />
               ) : null}
               <ul className="-my-6 divide-y divide-gray-200">
@@ -75,7 +73,7 @@ export default function Cart() {
                           <h3>
                             <a href={item.product.id}>{item.product.title}</a>
                           </h3>
-                          <p className="ml-4">${discountedPrice(item.product)}</p>
+                          <p className="ml-4">${item.product.DiscountPrice}</p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500">
                           {item.product.brand}

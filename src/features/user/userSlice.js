@@ -66,13 +66,11 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLoggedInUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        // this info can be different or more from logged-in User info
         state.userInfo = action.payload;
       });
   },
 });
 
-// TODO: change orders and address to be independent of user;
 export const selectUserOrders = (state) => state.user.userInfo.orders;
 
 export const selectUserInfo = (state) => state.user.userInfo;

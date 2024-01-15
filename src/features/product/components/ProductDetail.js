@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import { addToCartAsync, selectItems } from '../../cart/cartSlice';
 import { selectLoggedInUser } from '../../auth/authSlice';
 import { useAlert } from 'react-alert';
-import { Grid } from 'react-loader-spinner';
+import { Circles } from 'react-loader-spinner';
 
 
 function classNames(...classes) {
@@ -56,15 +56,14 @@ export default function ProductDetail() {
   return (
     <div className="bg-white">
       {status === 'loading' ? (
-        <Grid
-          height="80"
-          width="80"
-          color="rgb(79, 70, 229) "
-          ariaLabel="grid-loading"
-          radius="12.5"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
+        <Circles
+        height="80"
+        width="80"
+        color="#6495ed"
+        ariaLabel="circles-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
         />
       ) : null}
       {product && (

@@ -6,8 +6,8 @@ import {
   selectUserOrders,
   selectUserStatus,
 } from '../userSlice';
-import { discountedPrice } from '../../../app/constants';
-import { Grid } from 'react-loader-spinner';
+
+import { Circles } from 'react-loader-spinner';
 
 export default function UserOrders() {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ export default function UserOrders() {
                               <h3>
                                 <a href={item.product.id}>{item.product.title}</a>
                               </h3>
-                              <p className="ml-4">${discountedPrice(item.product)}</p>
+                              <p className="ml-4">${item.product.DiscountPrice}</p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
                               {item.product.brand}
@@ -116,15 +116,14 @@ export default function UserOrders() {
         </div>
       ))}
            {status === 'loading' ? (
-        <Grid
-          height="80"
-          width="80"
-          color="rgb(79, 70, 229) "
-          ariaLabel="grid-loading"
-          radius="12.5"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
+        <Circles
+        height="80"
+        width="80"
+        color="#6495ed"
+        ariaLabel="circles-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
         />
       ) : null}
     </div>
